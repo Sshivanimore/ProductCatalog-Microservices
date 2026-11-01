@@ -1,0 +1,42 @@
+@host = http://localhost:5192
+
+### 1. Register an admin
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{ "username": "user1", "password": "User@123", "role": "User" }
+
+### 2. Login
+# @name login
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "username": "admin1", "password": "Admin@123" }
+
+### 3. Create product WITHOUT token (expect 401)
+POST {{host}}/api/products
+Content-Type: application/json
+
+{ "name": "laptop", "price": 10, "stock": 50, "categoryId": 2 }
+
+### 4. Create product WITH token (expect 201)
+POST {{host}}/api/products
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{ "name": "Laptop", "price": 10, "stock": 5000, "categoryId": 2 }
+
+
+### 4. Delete product WITH token (expect 401)
+DELETE {{host}}/api/products/2
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+
+### 5. Update product WITH token (expect 401)
+PUT {{host}}/api/products/4
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{ "name": "Laptop", "price": 20, "stock": 500, "categoryId": 1 }
+

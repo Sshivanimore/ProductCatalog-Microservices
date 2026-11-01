@@ -1,0 +1,6 @@
+@host = http://localhost:5148
+
+POST {{host}}/api/orders
+Content-Type: application/json
+
+{ "productId": 1, "quantity": 2 }
